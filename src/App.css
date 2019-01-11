@@ -31,10 +31,7 @@
 .game-board {
   margin-left: auto;
   margin-right: auto;
-  width: 8em;
-  min-height: 10em;
   display: table-cell;
-  vertical-align: middle;
 }
 body {
   font: 14px "Century Gothic", Futura, sans-serif;

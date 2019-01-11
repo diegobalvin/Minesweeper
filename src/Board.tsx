@@ -1,27 +1,28 @@
 import * as React from 'react';
+import {Cell} from './Cell'
 
-function Square(props: {current: number}) {
-    return (
-      <button className="square">
-        {props.current}
-      </button>
-    );
+interface BoardState {
+    rows:number;
+    cols:number;
 }
 
-class Board extends React.Component {
-    public renderSquare(i:number) {
-      return (
-              <Square current={i} />
-            );
+function makeBoard(r:number, c:number) {
+    const arr = [];
+    for (let i = 0; i < r; i++){
+        arr.push(Array(c).fill(""))
     }
-    
+    return arr;
+}
+class Board extends React.Component<{},BoardState> {    
     public render() {
-      const arr = [0, 3, 6];
-      const listItems = arr.map((num) =>
-        <div className="board-row" key={num}>
-          {this.renderSquare(num)}
-          {this.renderSquare(num + 1)}
-          {this.renderSquare(num + 2)}
+      const arr = makeBoard(6, 5); // makeBoard(this.state.rows, this.state.cols);
+
+      const listItems = arr.map((row, i) =>
+        <div className="board-row" key={i}>
+          {row.map((cols, j) => <Cell key={j}
+                                value={cols}
+                            />)
+          }
         </div>
       );
       const status = "next";
