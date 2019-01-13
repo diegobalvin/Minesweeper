@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './App.css';
 import { Board } from './Board';
+import { Function } from './function';
 
 export interface AppProps {
   columns: number;
@@ -10,6 +11,7 @@ export interface AppProps {
 class App extends React.Component<AppProps> {
   public state = {
     columns: this.props.columns,
+    game: Function.drawBoard(this.props.rows, this.props.columns),
     rows: this.props.rows
   }
 
@@ -20,12 +22,9 @@ class App extends React.Component<AppProps> {
           <h1 className="App-title">{'Welcome to Minesweeper'}</h1>
         </header>
         <div className="game">
-          <div className="game-board">
             <Board 
-              rows={this.state.rows}
-              cols={this.state.columns}
+              game={this.state.game}
             />
-          </div>
         </div>
       </div>
     );
