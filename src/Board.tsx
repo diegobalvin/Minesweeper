@@ -2,19 +2,6 @@ import * as React from "react";
 import { Cell } from "./cellclass";
 import { Game } from "./gameclass";
 
-// class Cell {
-//     constructor (
-//         public bombs: number = 0,
-//         public isOpened: boolean = false,
-//         public position: Position
-//     ){}
-// }
-// class Game {
-//     constructor (
-//         public state: Cell [][]
-//     ) {}
-// }
-
 export interface CellProps {
   cell: Cell;
   onClick: (cell: Cell) => void;
@@ -28,7 +15,7 @@ export interface BoardProps {
 export function DrawCell(props: CellProps) {
   return (
     <button className="square" onClick={() => props.onClick(props.cell)}>
-      {String(props.cell.isOpened)}
+      {props.cell.bombs}
     </button>
   );
 }

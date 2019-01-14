@@ -17,14 +17,14 @@ class App extends React.Component<{}, AppState> {
     super(props);
     this.state = {
       boardSize: undefined,
-      game: Function.drawBoard(6, 6),
+      game: Function.drawBoard(6, 5),
       numMines: undefined
     };
     this.updateInputs = this.updateInputs.bind(this);
   }
 
   public updateState(cell: Cell, updateFn: (game: Game, cell: Cell) => Game) {
-    this.setState((prevState: any, props) => {
+    this.setState((prevState: any) => {
       const updatedGame = updateFn(prevState.game, cell);
       return {
         game: updatedGame
@@ -39,7 +39,7 @@ class App extends React.Component<{}, AppState> {
     this.setState((prevState: any) => {
       prevState.boardSize = boardSize;
       prevState.numMines = numMines;
-      prevState.game = Function.drawBoard(boardSize, boardSize);
+      prevState.game = Function.drawBoard(boardSize, numMines);
       return prevState;
     });
   }
