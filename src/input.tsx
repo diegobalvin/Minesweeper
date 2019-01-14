@@ -2,11 +2,19 @@ import { Formik } from "formik";
 import * as React from "react";
 import * as Yup from "yup";
 
-export class Input extends React.Component<{}> {
+export interface InputProps {
+  updateInputs: (boardSize: number, numMines: number) => void;
+}
+
+export class Input extends React.Component<InputProps> {
   public render() {
+    // TODO: pass prettier message
+    // TODO: validate less than n^2 (either solve yup or rewrite custom validation)
     const InputSchema = Yup.object().shape({
-      size: Yup.number()
-        .required()
+      boardSize: Yup.number()
+        .positive()
+        .integer(),
+      numMines: Yup.number()
         .positive()
         .integer()
     });
@@ -14,13 +22,22 @@ export class Input extends React.Component<{}> {
       <div>
         <h1>Welcome to minesweeper input page!</h1>
         <Formik
-          initialValues={{ size: "", password: "" }}
+          initialValues={{ boardSize: "", numMines: "" }}
           validationSchema={InputSchema}
           onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 400);
+            // callback function pass submitted values upstream
+            // boardSize should default to 6 if undefined at time of submit
+            // TODO: move magic number to top level source of truth (pass down from app)
+            if (!values.boardSize) {
+              values.boardSize = "6";
+            }
+            if (!values.numMines) {
+              values.numMines = "5";
+            }
+            this.props.updateInputs(
+              Number(values.boardSize),
+              Number(values.numMines)
+            );
           }}
         >
           {({
@@ -34,28 +51,33 @@ export class Input extends React.Component<{}> {
             /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
-              <label htmlFor="size">Size of board (n x n): </label>
+              <label htmlFor="boardSize">Size of board (n x n): </label>
               <input
-                id="size"
-                type="size"
-                name="size"
+                id="boardSize"
+                type="boardSize"
+                name="boardSize"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.size}
+                value={values.boardSize}
               />
-              {errors.size && touched.size && errors.size}
               <br />
               <br />
-              <label htmlFor="password">Number of mines: </label>
+              {errors.boardSize && touched.boardSize && errors.boardSize}
+
+              <br />
+              <br />
+              <label htmlFor="numMines">Number of mines: </label>
               <input
-                id="password"
-                type="password"
-                name="password"
+                id="numMines"
+                type="numMines"
+                name="numMines"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.password}
+                value={values.numMines}
               />
-              {errors.password && touched.password && errors.password}
+              <br />
+              <br />
+              {errors.numMines && touched.numMines && errors.numMines}
               <br />
               <br />
               <button type="submit" disabled={isSubmitting}>

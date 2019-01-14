@@ -4,20 +4,24 @@ import { Board } from "./Board";
 import { Cell } from "./cellclass";
 import { Function } from "./function";
 import { Game } from "./gameclass";
-import { Input } from "./input"
+import { Input } from "./input";
 
-export interface AppProps {
-  columns: number;
-  rows: number;
+export interface AppState {
+  boardSize: number | undefined;
+  game: Game;
+  numMines: number | undefined;
 }
 
-class App extends React.Component<AppProps> {
-  public state = {
-    columns: this.props.columns,
-    game: Function.drawBoard(this.props.rows, this.props.columns),
-    rows: this.props.rows,
-    size: undefined
-  };
+class App extends React.Component<{}, AppState> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      boardSize: undefined,
+      game: Function.drawBoard(6, 6),
+      numMines: undefined
+    };
+    this.updateInputs = this.updateInputs.bind(this);
+  }
 
   public updateState(cell: Cell, updateFn: (game: Game, cell: Cell) => Game) {
     this.setState((prevState: any, props) => {
@@ -31,10 +35,25 @@ class App extends React.Component<AppProps> {
     this.updateState(cell, Function.openCell);
   }
 
+  public updateInputs(boardSize: number, numMines: number) {
+    this.setState((prevState: any) => {
+      prevState.boardSize = boardSize;
+      prevState.numMines = numMines;
+      prevState.game = Function.drawBoard(boardSize, boardSize);
+      return prevState;
+    });
+  }
+
   public render() {
-    if (this.state.size === undefined) {
-      return (<Input/>)
-       
+    if (this.state.boardSize === undefined) {
+      return <Input updateInputs={this.updateInputs} />;
+    } else {
+      return (
+        <Board
+          game={this.state.game}
+          onClick={(cell: Cell) => this.onClick(cell)}
+        />
+      );
     }
     return (
       <div className="App">
