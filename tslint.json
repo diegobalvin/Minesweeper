@@ -9,6 +9,7 @@
   },
   "rules": {
     "interface-name": [true, "never-prefix"],
-    "jsx-no-lambda": false
+    "jsx-no-lambda": false,
+    "no-console": false
   }
 }

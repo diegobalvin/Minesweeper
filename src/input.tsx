@@ -20,7 +20,6 @@ export class Input extends React.Component<InputProps> {
     });
     return (
       <div>
-        <h1>Welcome to minesweeper input page!</h1>
         <Formik
           initialValues={{ boardSize: "", numMines: "" }}
           validationSchema={InputSchema}

@@ -13,18 +13,18 @@ export interface AppState {
 }
 
 class App extends React.Component<{}, AppState> {
-  constructor(props: any) {
+  constructor(props: AppState) {
     super(props);
     this.state = {
       boardSize: undefined,
-      game: Function.drawBoard(6, 6),
+      game: Function.initBoard(6, 5),
       numMines: undefined
     };
     this.updateInputs = this.updateInputs.bind(this);
   }
 
   public updateState(cell: Cell, updateFn: (game: Game, cell: Cell) => Game) {
-    this.setState((prevState: any, props) => {
+    this.setState((prevState: AppState) => {
       const updatedGame = updateFn(prevState.game, cell);
       return {
         game: updatedGame
@@ -36,37 +36,43 @@ class App extends React.Component<{}, AppState> {
   }
 
   public updateInputs(boardSize: number, numMines: number) {
-    this.setState((prevState: any) => {
+    this.setState((prevState: AppState) => {
       prevState.boardSize = boardSize;
       prevState.numMines = numMines;
-      prevState.game = Function.drawBoard(boardSize, boardSize);
+      prevState.game = Function.initBoard(boardSize, numMines);
       return prevState;
     });
   }
 
   public render() {
+    let toRender;
     if (this.state.boardSize === undefined) {
-      return <Input updateInputs={this.updateInputs} />;
-    } else {
-      return (
+      toRender = (
+        <div>
+          <h1>Welcome to minesweeper input page!</h1>
+          <Input updateInputs={this.updateInputs} />
+        </div>
+      );
+    } else if (!this.state.game.exploded) {
+      toRender = (
         <Board
           game={this.state.game}
           onClick={(cell: Cell) => this.onClick(cell)}
         />
       );
+    } else {
+      toRender = (
+        <div>
+          <h1 key={0}>Game Over. Play again?</h1>
+          <Input updateInputs={this.updateInputs} key={1} />
+        </div>
+      );
     }
+
     return (
       <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">{"Welcome to Minesweeper"}</h1>
-        </header>
-        <div className="game">
-          -
-          <Board
-            game={this.state.game}
-            onClick={(cell: Cell) => this.onClick(cell)}
-          />
-        </div>
+        <h1 className="App-title">{"Welcome to Minesweeper"}</h1>
+        <div className="game">{toRender}</div>
       </div>
     );
   }
