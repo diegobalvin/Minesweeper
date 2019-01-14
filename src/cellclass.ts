@@ -4,7 +4,7 @@ export interface Position {
 }
 export class Cell {
     constructor (
-        public bombs: number = 0,
+        public adjBombs: number = 0,
         public isOpened: boolean = false,
         public position: Position
     ){}

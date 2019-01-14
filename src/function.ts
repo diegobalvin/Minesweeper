@@ -1,7 +1,7 @@
 import { Cell, Position } from './cellclass';
 import { Game } from './gameclass';
 
-function drawBoard(size: number, numMines: number): Game {
+function initBoard(size: number, numMines: number): Game {
     const arr: number[] = []
     while(arr.length < numMines) {
         const r = Math.floor(Math.random() * Math.pow(size, 2));
@@ -19,8 +19,8 @@ function drawBoard(size: number, numMines: number): Game {
         });
     });
     countAdjMines(state)
-    
-    return new Game(state);
+
+    return new Game(state, false);
 };
 
 function inBounds(state: Cell[][], dx:number, dy:number, pos: Position): boolean {
@@ -28,15 +28,15 @@ function inBounds(state: Cell[][], dx:number, dy:number, pos: Position): boolean
 }
 
 function countAdjMines(state: Cell[][]): void {
-    state.forEach((row) => {
-        row.forEach((cell) => { 
-            if (cell.bombs === -1) {
+    state.forEach(row => {
+        row.forEach(cell => { 
+            if (cell.adjBombs === -1) {
                 for (let dx = -1; dx < 2; dx++) {
                     for (let dy = -1; dy < 2; dy++) {
                         if (inBounds(state, dx, dy, cell.position)) {
                             const currCell = state[cell.position.x + dx][cell.position.y + dy]
-                            if (currCell.bombs !== -1) {
-                                currCell.bombs++;
+                            if (currCell.adjBombs !== -1) {
+                                currCell.adjBombs++;
                             }
                         }
                     }
@@ -46,28 +46,15 @@ function countAdjMines(state: Cell[][]): void {
     });
 }
 
-function update(game: Game, fn: (cell: Cell) => Cell): Game {
-    const updated: Cell[][] = game.state.slice().map(row => {
-        return row.slice().map(cell => {
-            return fn(cell);
-        });
-    });
-    return new Game(updated);
-}
-
 function openCell(game: Game, cell: Cell): Game {
-    const openField = (selectedCell: Cell) => (square: Cell) => { 
-        if (selectedCell === square) {
-            return new Cell(square.bombs, true, square.position);
-        } else {
-            return new Cell(square.bombs, square.isOpened, square.position);
-        }
-    };
-
-    return update(game, openField(cell));
+    cell.isOpened = true
+    if (cell.adjBombs === -1) {
+        game.exploded = true
+    }
+    return game
 }
 
 export const Function = {
-    drawBoard,
+    initBoard,
     openCell
 };

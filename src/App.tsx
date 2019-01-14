@@ -13,18 +13,18 @@ export interface AppState {
 }
 
 class App extends React.Component<{}, AppState> {
-  constructor(props: any) {
+  constructor(props: AppState) {
     super(props);
     this.state = {
       boardSize: undefined,
-      game: Function.drawBoard(6, 5),
+      game: Function.initBoard(6, 5),
       numMines: undefined
     };
     this.updateInputs = this.updateInputs.bind(this);
   }
 
   public updateState(cell: Cell, updateFn: (game: Game, cell: Cell) => Game) {
-    this.setState((prevState: any) => {
+    this.setState((prevState: AppState) => {
       const updatedGame = updateFn(prevState.game, cell);
       return {
         game: updatedGame
@@ -36,37 +36,44 @@ class App extends React.Component<{}, AppState> {
   }
 
   public updateInputs(boardSize: number, numMines: number) {
-    this.setState((prevState: any) => {
+    this.setState((prevState: AppState) => {
       prevState.boardSize = boardSize;
       prevState.numMines = numMines;
-      prevState.game = Function.drawBoard(boardSize, numMines);
+      prevState.game = Function.initBoard(boardSize, numMines);
       return prevState;
     });
   }
 
   public render() {
+    let x;
     if (this.state.boardSize === undefined) {
-      return <Input updateInputs={this.updateInputs} />;
-    } else {
-      return (
+      x = (
+        <div>
+          <Input updateInputs={this.updateInputs} />
+        </div>
+      );
+    } else if (!this.state.game.exploded) {
+      x = (
         <Board
           game={this.state.game}
           onClick={(cell: Cell) => this.onClick(cell)}
         />
       );
+    } else {
+      x = (
+        <div>
+          <h1 key={0}>Game Over</h1>
+          <Input updateInputs={this.updateInputs} key={1} />
+        </div>
+      );
     }
+
     return (
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">{"Welcome to Minesweeper"}</h1>
         </header>
-        <div className="game">
-          -
-          <Board
-            game={this.state.game}
-            onClick={(cell: Cell) => this.onClick(cell)}
-          />
-        </div>
+        <div className="game">{x}</div>
       </div>
     );
   }

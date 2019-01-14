@@ -11,11 +11,17 @@ export interface BoardProps {
   game: Game;
   onClick: (cell: Cell) => void;
 }
-
+function styleCell(cell: Cell) {
+  if (!cell.isOpened) {
+    return "";
+  } else {
+    return cell.adjBombs;
+  }
+}
 export function DrawCell(props: CellProps) {
   return (
     <button className="square" onClick={() => props.onClick(props.cell)}>
-      {props.cell.bombs}
+      {styleCell(props.cell)}
     </button>
   );
 }
