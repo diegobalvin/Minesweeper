@@ -9,7 +9,7 @@
 
 .App-header {
   background-color: #222;
-  height: 3.5em;
+  height: 3em;
   padding: 20px;
   color: white;
 }
@@ -27,57 +27,77 @@
   to { transform: rotate(360deg); }
 }
 
-/* Copy and pasted stuff from tic-tac-toe here */
 .game-board {
   margin-left: auto;
   margin-right: auto;
   display: table-cell;
 }
+
+.board-row {
+  margin-left: auto;
+  padding: 2px;
+  margin-right: auto;
+}
+
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
+  margin-left: 0;
+  margin-top: 15px;
+  font-family: apple-system;
+  font-size: 12px;
+  font-weight: 600;
+  height: 100%;
 }
 
-ol, ul {
-  padding-left: 30px;
+button:focus {
+  outline:0;
 }
 
-.board-row:after {
-  clear: both;
-  content: "";
-  display: table;
+.square.opened#one {
+  color: rgb(31, 101, 246);
 }
-
-.status {
-  margin-bottom: 10px;
-  text-align: center;
+.square.opened#two {
+  color: rgb(0, 209, 178);
+}
+.square.opened#three {
+  color: rgb(145, 102, 255);
+}
+.square.opened#four {
+  color: rgb(255, 76, 108);
+}
+.square.opened#five {
+  color: rgb(255, 143, 88);
+}
+.square.opened#six {
+  color: rgb(234, 196, 53);
+}
+.square.opened#seven {
+  color: rgb(95, 173, 86);
+}
+.square.opened#eight {
+  color: rgb(31, 32, 65);
 }
 
 .square {
-  background: #fff;
+  background: #ffffff;
   border: 1px solid #999;
   float: left;
   font-size: 24px;
-  font-weight: bold;
   line-height: 34px;
+  font-weight: 600;
   height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
+  margin-right: -0.125em;
+  margin-top: -0.125em;
+  padding: 0px;
   text-align: center;
   width: 34px;
 }
 
+.square.opened {
+  background-color: rgb(241, 243, 245);
+}
+
 .square:hover {
-  background-color: lightblue;
-}
-
-.square:focus {
-  outline: none;
-}
-
-.kbd-navigation .square:focus {
-  background: #ddd;
+  background-color: lightcyan;
 }
 
 .game {

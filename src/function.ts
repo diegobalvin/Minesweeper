@@ -24,7 +24,7 @@ function initBoard(size: number, numMines: number): Game {
 };
 
 function inBounds(state: Cell[][], dx:number, dy:number, pos: Position): boolean {
-    return pos.x + dx >= 0 && pos.x + dx < state.length && pos.y + dy >= 0 && pos.y + dy < state[0].length
+    return !(pos.x + dx < 0 || pos.x + dx >= state.length || pos.y + dy < 0 || pos.y + dy >= state[0].length)
 }
 
 function countAdjMines(state: Cell[][]): void {
@@ -47,9 +47,35 @@ function countAdjMines(state: Cell[][]): void {
 }
 
 function openCell(game: Game, cell: Cell): Game {
-    cell.isOpened = true
     if (cell.adjBombs === -1) {
         game.exploded = true
+    } else if (cell.adjBombs > 0) {
+        cell.isOpened = true
+    } else {
+        cell.isOpened = true
+        let arr = [cell]
+        
+        while (arr.length !== 0) {
+            const temp: Cell[] = [];
+            console.log(arr)
+            arr.forEach(element => {
+                for (let dx = -1; dx < 2; dx++) {
+                    for (let dy = -1; dy < 2; dy++) {
+                        if (inBounds(game.state, dx, dy, element.position) && !(dx === 0 && dy === 0)) {
+                            const curr = game.state[element.position.x + dx][element.position.y + dy]
+                            if (curr.adjBombs !== 0) {
+                                curr.isOpened = true
+                            }
+                            if (curr.adjBombs === 0 && !curr.isOpened) {
+                                temp.push(curr);
+                                curr.isOpened = true;
+                            }
+                        }
+                    }
+                }
+            });
+            arr = temp
+        }
     }
     return game
 }

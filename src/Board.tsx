@@ -12,15 +12,40 @@ export interface BoardProps {
   onClick: (cell: Cell) => void;
 }
 function styleCell(cell: Cell) {
+  if (cell.isOpened) {
+    const x = cell.adjBombs === 0 ? "" : String(cell.adjBombs);
+    return x;
+  } else {
+    return "";
+  }
+}
+
+function findID(cell: Cell) {
   if (!cell.isOpened) {
     return "";
   } else {
-    return cell.adjBombs;
+    const countString = [
+      "zero",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight"
+    ];
+    return countString[cell.adjBombs];
   }
 }
+
 export function DrawCell(props: CellProps) {
   return (
-    <button className="square" onClick={() => props.onClick(props.cell)}>
+    <button
+      className={props.cell.isOpened ? "square opened" : "square"}
+      onClick={() => props.onClick(props.cell)}
+      id={findID(props.cell)}
+    >
       {styleCell(props.cell)}
     </button>
   );
