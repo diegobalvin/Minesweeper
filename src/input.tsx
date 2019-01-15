@@ -13,7 +13,8 @@ export class Input extends React.Component<InputProps> {
       boardSize: Yup.number()
         .required()
         .positive()
-        .integer(),
+        .integer()
+        .max(30),
       numMines: Yup.number()
         .required()
         .positive()
@@ -25,9 +26,6 @@ export class Input extends React.Component<InputProps> {
           initialValues={{ boardSize: "6", numMines: "5" }}
           validationSchema={InputSchema}
           onSubmit={values => {
-            // callback function pass submitted values upstream
-            // boardSize should default to 6 if undefined at time of submit
-            // TODO: move magic number to top level source of truth (pass down from app)
             this.props.updateInputs(
               Number(values.boardSize),
               Number(values.numMines)
