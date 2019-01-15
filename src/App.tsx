@@ -49,32 +49,31 @@ class App extends React.Component<{}, AppState> {
     if (this.state.boardSize === undefined) {
       toRender = (
         <div>
-          <h1>Welcome to minesweeper input page!</h1>
+          <h1>Welcome to Minesweeper</h1>
           <Input updateInputs={this.updateInputs} />
         </div>
       );
     } else if (!this.state.game.exploded) {
       toRender = (
-        <Board
-          game={this.state.game}
-          onClick={(cell: Cell) => this.onClick(cell)}
-        />
+        <div className="game">
+          <Board
+            game={this.state.game}
+            onClick={(cell: Cell) => this.onClick(cell)}
+          />
+          <h1 className="App-title">{"Whatever you do, don't blow up"}</h1>
+        </div>
       );
     } else {
       toRender = (
         <div>
-          <h1 key={0}>Game Over. Play again?</h1>
+          <h1 key={0}>Yikes. You blew up</h1>
+          <h2>Play again?</h2>
           <Input updateInputs={this.updateInputs} key={1} />
         </div>
       );
     }
 
-    return (
-      <div className="App">
-        <h1 className="App-title">{"Welcome to Minesweeper"}</h1>
-        <div className="game">{toRender}</div>
-      </div>
-    );
+    return <div className="App">{toRender}</div>;
   }
 }
 

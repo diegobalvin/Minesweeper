@@ -1,0 +1,50 @@
+body {
+    margin-left: 0;
+    margin-top: 15px;
+    font-family: apple-system;
+    font-size: 12px;
+    font-weight: 600;
+    height: 100%;
+}  
+/*  <input id="boardSize" type="boardSize" name="boardSize" value=""> */
+
+input {
+    width: 20px; 
+    height: 20px;
+    outline-width: 0.5px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+}
+
+label {
+    font-size: 14px;
+    text-align: right;
+}
+
+button[type=submit]:hover {
+    background-color: rgb(27, 92, 221);
+}
+
+button[type=submit] {
+    border: none;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    background-color: rgb(31, 101, 246);
+    -webkit-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 40px;
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    padding: 0 20px;
+    margin-bottom: 43px;
+    border-radius: 4px;
+    z-index: 2;
+}
