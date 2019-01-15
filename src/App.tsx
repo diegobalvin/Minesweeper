@@ -78,6 +78,7 @@ class App extends React.Component<{}, AppState> {
     } else {
       toRender = (
         <div className="game">
+          <p className="helper-text">{"Command-Click to Flag"}</p>
           <Board
             game={this.state.game}
             onClick={(cell: Cell, e: any) => this.onClick(cell, e)}

@@ -117,6 +117,10 @@ h3 {
 }
 
 .square.flag {
-  background-image:url('flag-small.png');
+  background-image:url('flag-images/flag-small-transparent.png');
   background-repeat: no-repeat;
+}
+
+.helper-text {
+  opacity: 0.5;
 }
