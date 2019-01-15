@@ -15,15 +15,15 @@ function initBoard(size: number, numMines: number): Game {
     const state: Cell[][] = Array(size).fill(null).map((row: number, i: number) => {
         return Array(size).fill(null).map((col: number, j: number) => {
             if (arr.indexOf(i * size + j) > -1) {
-                return new Cell(-1, false, {x: i, y: j});
+                return new Cell(-1, false, {x: i, y: j}, false);
             } else {
-                return new Cell(0, false, {x: i, y: j});
+                return new Cell(0, false, {x: i, y: j}, false);
             }
         });
     });
     countAdjMines(state)
 
-    return new Game(state, false);
+    return new Game(state, false, false, numMines);
 };
 
 function inBounds(state: Cell[][], dx:number, dy:number, pos: Position): boolean {
@@ -49,29 +49,55 @@ function countAdjMines(state: Cell[][]): void {
     });
 }
 
-function openCell(game: Game, cell: Cell): Game {
+function checkWonFlag(game: Game) : boolean {
+    for (const r of game.state) {
+        for (const c of r) {
+            if (c.adjBombs === -1 && c.flag === false) {
+                return false;
+            }
+            if (c.adjBombs !== -1 && c.flag === true) {
+                return false;
+            }
+        }
+    }
+    return true
+}
+
+function openCell(game: Game, cell: Cell, flag: boolean): Game {
+    if(cell.flag) {
+        cell.flag = false
+        return game
+    }
+    if(flag && !cell.isOpened) {
+        cell.flag = true
+        game.won = checkWonFlag(game)
+        return game
+    }
     if (cell.adjBombs === -1) {
         game.exploded = true
     } else if (cell.adjBombs > 0) {
         cell.isOpened = true
-    } else {
+    } else { // bfs to open adjacent squares
         cell.isOpened = true
         let arr = [cell]
         
         while (arr.length !== 0) {
             const temp: Cell[] = [];
-            console.log(arr)
             arr.forEach(element => {
                 for (let dx = -1; dx < 2; dx++) {
                     for (let dy = -1; dy < 2; dy++) {
                         if (inBounds(game.state, dx, dy, element.position) && !(dx === 0 && dy === 0)) {
                             const curr = game.state[element.position.x + dx][element.position.y + dy]
-                            if (curr.adjBombs !== 0) {
-                                curr.isOpened = true
-                            }
-                            if (curr.adjBombs === 0 && !curr.isOpened) {
-                                temp.push(curr);
-                                curr.isOpened = true;
+                            if (!curr.isOpened) {
+                                if (curr.adjBombs === 0) {
+                                    temp.push(curr);
+                                    curr.isOpened = true;
+                                    curr.flag = false;
+                                }
+                                if (curr.adjBombs > 0) {
+                                    curr.isOpened = true;
+                                    curr.flag = false;
+                                }
                             }
                         }
                     }
@@ -79,6 +105,17 @@ function openCell(game: Game, cell: Cell): Game {
             });
             arr = temp
         }
+    }
+    let coveredSquares: number = 0;
+    for (const r of game.state) {
+        for(const c of r) {
+            if(!c.isOpened) {
+                coveredSquares++;
+            }
+        }
+    }
+    if (coveredSquares === game.numMines) {
+        game.won = true;
     }
     return game
 }

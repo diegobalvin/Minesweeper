@@ -11,27 +11,23 @@ export class Input extends React.Component<InputProps> {
   public render() {
     const InputSchema = Yup.object().shape({
       boardSize: Yup.number()
+        .required()
         .positive()
         .integer(),
       numMines: Yup.number()
+        .required()
         .positive()
         .integer()
     });
     return (
       <div>
         <Formik
-          initialValues={{ boardSize: "", numMines: "" }}
+          initialValues={{ boardSize: "6", numMines: "5" }}
           validationSchema={InputSchema}
           onSubmit={values => {
             // callback function pass submitted values upstream
             // boardSize should default to 6 if undefined at time of submit
             // TODO: move magic number to top level source of truth (pass down from app)
-            if (!values.boardSize) {
-              values.boardSize = "6";
-            }
-            if (!values.numMines) {
-              values.numMines = "5";
-            }
             this.props.updateInputs(
               Number(values.boardSize),
               Number(values.numMines)

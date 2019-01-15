@@ -6,6 +6,7 @@ export class Cell {
     constructor (
         public adjBombs: number = 0,
         public isOpened: boolean = false,
-        public position: Position
+        public position: Position,
+        public flag: boolean = false
     ){}
 }
