@@ -1,21 +1,11 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 3em;
-  padding: 20px;
-  color: white;
+  margin-top: 5em;
 }
 
 .App-title {
-  font-size: 1.5em;
+  font-size: 2.5em;
+  margin-bottom: 1.8em;
 }
 
 .App-intro {
@@ -27,7 +17,7 @@
   to { transform: rotate(360deg); }
 }
 
-.game-board {
+div .game-board {
   margin-left: auto;
   margin-right: auto;
   display: table-cell;
@@ -77,9 +67,14 @@ button:focus {
   color: rgb(31, 32, 65);
 }
 
+h1 {
+  font-size: 3.5em;
+  color: black;
+}
+
 .square {
   background: #ffffff;
-  border: 1px solid #999;
+  border: 1px solid rgb(170, 170, 170);
   float: left;
   font-size: 24px;
   line-height: 34px;
@@ -97,7 +92,7 @@ button:focus {
 }
 
 .square:hover {
-  background-color: lightcyan;
+  background-color: rgb(238, 240, 241);
 }
 
 .game {

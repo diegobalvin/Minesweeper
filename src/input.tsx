@@ -1,6 +1,7 @@
 import { Formik } from "formik";
 import * as React from "react";
 import * as Yup from "yup";
+import "./input.css";
 
 export interface InputProps {
   updateInputs: (boardSize: number, numMines: number) => void;
@@ -8,8 +9,6 @@ export interface InputProps {
 
 export class Input extends React.Component<InputProps> {
   public render() {
-    // TODO: pass prettier message
-    // TODO: validate less than n^2 (either solve yup or rewrite custom validation)
     const InputSchema = Yup.object().shape({
       boardSize: Yup.number()
         .positive()
@@ -23,7 +22,7 @@ export class Input extends React.Component<InputProps> {
         <Formik
           initialValues={{ boardSize: "", numMines: "" }}
           validationSchema={InputSchema}
-          onSubmit={(values, { setSubmitting }) => {
+          onSubmit={values => {
             // callback function pass submitted values upstream
             // boardSize should default to 6 if undefined at time of submit
             // TODO: move magic number to top level source of truth (pass down from app)
@@ -47,10 +46,9 @@ export class Input extends React.Component<InputProps> {
             handleBlur,
             handleSubmit,
             isSubmitting
-            /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
-              <label htmlFor="boardSize">Size of board (n x n): </label>
+              <label htmlFor="boardSize">Board Size (n x n): </label>
               <input
                 id="boardSize"
                 type="boardSize"
@@ -59,13 +57,10 @@ export class Input extends React.Component<InputProps> {
                 onBlur={handleBlur}
                 value={values.boardSize}
               />
-              <br />
-              <br />
+              <pre />
               {errors.boardSize && touched.boardSize && errors.boardSize}
-
-              <br />
-              <br />
-              <label htmlFor="numMines">Number of mines: </label>
+              <pre />
+              <label htmlFor="numMines">Number of Mines: </label>
               <input
                 id="numMines"
                 type="numMines"
@@ -75,12 +70,10 @@ export class Input extends React.Component<InputProps> {
                 value={values.numMines}
               />
               <br />
-              <br />
               {errors.numMines && touched.numMines && errors.numMines}
               <br />
-              <br />
               <button type="submit" disabled={isSubmitting}>
-                Submit
+                Play Now →
               </button>
             </form>
           )}

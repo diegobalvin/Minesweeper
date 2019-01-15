@@ -2,6 +2,9 @@ import { Cell, Position } from './cellclass';
 import { Game } from './gameclass';
 
 function initBoard(size: number, numMines: number): Game {
+    if (numMines > size * size) {
+        numMines = size * size
+    }
     const arr: number[] = []
     while(arr.length < numMines) {
         const r = Math.floor(Math.random() * Math.pow(size, 2));
