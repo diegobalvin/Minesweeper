@@ -51,6 +51,24 @@ class App extends React.Component<{}, AppState> {
   }
 
   public render() {
+    let winLoss;
+    if (this.state.game.exploded || this.state.game.won) {
+      const result = this.state.game.won ? "YOU WON!" : "Yikes. You blew up";
+      winLoss = (
+        <div>
+          <h1 key={0}>{result}</h1>
+          <h3>Play again?</h3>
+          <button
+            type="submit"
+            className="playAgain"
+            onClick={() => this.setState({ boardSize: undefined })}
+          >
+            Play Now →
+          </button>
+        </div>
+      );
+    }
+
     let toRender;
     if (this.state.boardSize === undefined) {
       toRender = (
@@ -59,25 +77,10 @@ class App extends React.Component<{}, AppState> {
           <Input updateInputs={this.updateInputs} />
         </div>
       );
-    } else if (this.state.game.exploded) {
-      toRender = (
-        <div>
-          <h1 key={0}>Yikes. You blew up</h1>
-          <h3>Play again?</h3>
-          <Input updateInputs={this.updateInputs} key={1} />
-        </div>
-      );
-    } else if (this.state.game.won) {
-      toRender = (
-        <div>
-          <h1 key={0}>YOU WON!</h1>
-          <h3>Play again?</h3>
-          <Input updateInputs={this.updateInputs} key={1} />
-        </div>
-      );
     } else {
       toRender = (
         <div className="game">
+          {winLoss}
           <p className="helper-text">{"Command-Click to Flag"}</p>
           <Board
             game={this.state.game}
