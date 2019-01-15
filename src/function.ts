@@ -55,6 +55,9 @@ function checkWonFlag(game: Game) : boolean {
             if (c.adjBombs === -1 && c.flag === false) {
                 return false;
             }
+            if (c.adjBombs !== -1 && c.flag === true) {
+                return false;
+            }
         }
     }
     return true
@@ -74,25 +77,26 @@ function openCell(game: Game, cell: Cell, flag: boolean): Game {
         game.exploded = true
     } else if (cell.adjBombs > 0) {
         cell.isOpened = true
-    } else { // bfs to open many squares
+    } else { // bfs to open adjacent squares
         cell.isOpened = true
         let arr = [cell]
         
         while (arr.length !== 0) {
             const temp: Cell[] = [];
-            console.log(arr)
             arr.forEach(element => {
                 for (let dx = -1; dx < 2; dx++) {
                     for (let dy = -1; dy < 2; dy++) {
                         if (inBounds(game.state, dx, dy, element.position) && !(dx === 0 && dy === 0)) {
                             const curr = game.state[element.position.x + dx][element.position.y + dy]
-                            if(!curr.isOpened) {
-                                if(curr.adjBombs === 0) {
+                            if (!curr.isOpened) {
+                                if (curr.adjBombs === 0) {
                                     temp.push(curr);
                                     curr.isOpened = true;
+                                    curr.flag = false;
                                 }
-                                if(curr.adjBombs > 0) {
-                                    curr.isOpened = true
+                                if (curr.adjBombs > 0) {
+                                    curr.isOpened = true;
+                                    curr.flag = false;
                                 }
                             }
                         }
