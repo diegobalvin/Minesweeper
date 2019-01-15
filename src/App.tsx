@@ -60,14 +60,20 @@ class App extends React.Component<{}, AppState> {
             game={this.state.game}
             onClick={(cell: Cell) => this.onClick(cell)}
           />
-          <h1 className="App-title">{"Whatever you do, don't blow up"}</h1>
+          <h2 className="game-subheading">
+            {"Clear the mine field"}
+            <span style={{ color: "rgb(255, 143, 88)" }}>
+              {" without blowing up and you win."}
+            </span>
+          </h2>
+          <h1 className="App-title">{"Rules are Simple"}</h1>
         </div>
       );
     } else {
       toRender = (
         <div>
           <h1 key={0}>Yikes. You blew up</h1>
-          <h2>Play again?</h2>
+          <h3>Play again?</h3>
           <Input updateInputs={this.updateInputs} key={1} />
         </div>
       );
