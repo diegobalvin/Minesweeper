@@ -4,12 +4,12 @@ import { Game } from "./gameclass";
 
 export interface CellProps {
   cell: Cell;
-  onClick: (cell: Cell) => void;
+  onClick: (cell: Cell, e: any) => void;
 }
 
 export interface BoardProps {
   game: Game;
-  onClick: (cell: Cell) => void;
+  onClick: (cell: Cell, e: any) => void;
 }
 function styleCell(cell: Cell) {
   if (cell.isOpened) {
@@ -40,10 +40,13 @@ function findID(cell: Cell) {
 }
 
 export function DrawCell(props: CellProps) {
+  const cellClass: string =
+    (props.cell.isOpened ? "square opened" : "square") +
+    (props.cell.flag ? " flag" : "");
   return (
     <button
-      className={props.cell.isOpened ? "square opened" : "square"}
-      onClick={() => props.onClick(props.cell)}
+      className={cellClass}
+      onClick={e => props.onClick(props.cell, e)}
       id={findID(props.cell)}
     >
       {styleCell(props.cell)}
@@ -60,7 +63,7 @@ export function Board(props: BoardProps) {
             <DrawCell
               key={j}
               cell={cell}
-              onClick={(mine: Cell) => props.onClick(mine)}
+              onClick={(mine: Cell, e: any) => props.onClick(mine, e)}
             />
           ))}
         </div>

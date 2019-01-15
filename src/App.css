@@ -115,3 +115,8 @@ h3 {
 .game-info {
   margin-left: 30px;
 }
+
+.square.flag {
+  background-image:url('flag-small.png');
+  background-repeat: no-repeat;
+}
